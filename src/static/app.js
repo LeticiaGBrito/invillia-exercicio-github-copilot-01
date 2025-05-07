@@ -21,35 +21,36 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
 
         // Create participants component
-        const participantsComponent = details.participants.length > 0
-          ? `<ul class="participants-list">
-               ${details.participants.map(participants => `<li>${participants}</li>`).join("")}
-             </ul>`
-          : "<p>No participants yet</p>";
-
-        activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+        function createParticipantsComponents(participants) {
+          if (participants.length > 0) {
+            return "<p><strong>Participants:</strong> No participants yet</p>";  
+          }
+          const participantsList = participants
+            .map((participant) => `<li>${participant}</li>`)
+            .join("");
+          return `
           <p><strong>Participants:</strong></p>
-          ${participantsComponent}
+          <ul>class ="participants-list">
+            ${participantsList}
+            </ul>
+          </ul>
+          `;
+        }
+
+        // Add activity card content
+        activityCard.innerHTML = `
+          <h3>${name}</h3>
+          <p><strong>Spots Left:</strong> ${spotsLeft}</p>
+          ${createParticipantsComponents(details.participants)}
         `;
 
         activitiesList.appendChild(activityCard);
-
-        // Add option to select dropdown
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        activitySelect.appendChild(option);
       });
     } catch (error) {
-      activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
+      activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
     }
   }
-
   // Handle form submission
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
