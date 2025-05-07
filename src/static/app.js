@@ -4,21 +4,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
-  // Function to fetch activities from API
-  async function fetchActivities() {
-    try {
-      const response = await fetch("/activities");
-      const activities = await response.json();
+ // Function to fetch activities from API
+ async function fetchActivities() {
+  try {
+    const response = await fetch("/activities");
+    const activities = await response.json();
 
-      // Clear loading message
-      activitiesList.innerHTML = "";
+    // Clear loading message
+    activitiesList.innerHTML = "";
 
-      // Populate activities list
+       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
+
+        activityCard.innerHTML = `
+          <h4>${name}</h4>
+          <p>${details.description}</p>
+          <p><strong>Schedule:</strong> ${details.schedule}</p>
+          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+        `;
+
+        activitiesList.appendChild(activityCard);
 
         // Create participants component
         function createParticipantsComponents(participants) {
@@ -79,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       messageDiv.classList.remove("hidden");
 
-      // Hide message after 5 seconds
-      setTimeout(() => {
+       // Hide message after 5 seconds
+       setTimeout(() => {
         messageDiv.classList.add("hidden");
       }, 5000);
     } catch (error) {
