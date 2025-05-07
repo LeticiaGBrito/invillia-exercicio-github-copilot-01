@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Create participants component
         const participantsComponent = details.participants.length > 0
           ? `<ul class="participants-list">
-               ${details.participants.map(participant => `<li>${participant}</li>`).join("")}
+               ${details.participants.map(participants => `<li>${participants}</li>`).join("")}
              </ul>`
           : "<p>No participants yet</p>";
 
