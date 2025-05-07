@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Create participants component
         function createParticipantsComponents(participants) {
-          if (participants.length > 0) {
+          if (participants.length === 0) {
             return "<p><strong>Participants:</strong> No participants yet</p>";  
           }
           const participantsList = participants
